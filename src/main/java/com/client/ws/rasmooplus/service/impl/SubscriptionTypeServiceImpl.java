@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.client.ws.rasmooplus.exception.NotFoundException;
 import com.client.ws.rasmooplus.model.SubscriptionType;
 import com.client.ws.rasmooplus.repositoy.SubscriptionTypeRepository;
 import com.client.ws.rasmooplus.service.SubscriptionTypeService;
@@ -38,9 +39,9 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
     @Override
     public SubscriptionType findById(Long id) {
         Optional<SubscriptionType> optionalSubscriptionType = subscriptionTypeRepository.findById(id);
-        
+
         if (optionalSubscriptionType.isEmpty()) {
-            return null;
+            throw new NotFoundException("SubscriptionType não encontrado");
         }
 
         return optionalSubscriptionType.get();
