@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.client.ws.rasmooplus.model.SubscriptionType;
-import com.client.ws.rasmooplus.repositoy.SubscriptionTypeRepository;
+import com.client.ws.rasmooplus.service.SubscriptionTypeService;
 
 @RestController
 @RequestMapping("/subscription-type")
 public class SubscriptionTypeController {
 
     @Autowired
-    private SubscriptionTypeRepository subscriptionTypeRepository;
+    private SubscriptionTypeService subscriptionTypeService;
     
     @GetMapping
     public ResponseEntity<List<SubscriptionType>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(subscriptionTypeRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(subscriptionTypeService.findAll());
     }
 }
