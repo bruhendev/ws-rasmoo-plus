@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.client.ws.rasmooplus.dto.SubscriptionTypeDto;
 import com.client.ws.rasmooplus.exception.NotFoundException;
 import com.client.ws.rasmooplus.model.SubscriptionType;
 import com.client.ws.rasmooplus.repositoy.SubscriptionTypeRepository;
@@ -20,9 +21,14 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
     }
 
     @Override
-    public SubscriptionType create(SubscriptionType subscriptionType) {
-        // TODO Auto-generated method stub
-        return null;
+    public SubscriptionType create(SubscriptionTypeDto dto) {
+        return subscriptionTypeRepository.save(SubscriptionType.builder()
+                .id(dto.getId())
+                .name(dto.getName())
+                .accessMonth(dto.getAccessMonth())
+                .price(dto.getPrice())
+                .productKey(dto.getProductKey())
+                .build());
     }
 
     @Override
