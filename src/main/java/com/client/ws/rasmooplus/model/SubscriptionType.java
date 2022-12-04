@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "subscription_type")
+@Table(name = "subscriptions_type")
 public class SubscriptionType implements Serializable {
 
     @Id
