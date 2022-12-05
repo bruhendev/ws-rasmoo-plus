@@ -30,7 +30,7 @@ public class SubscriptionTypeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SubscriptionType> findById(@PathVariable("id") Long id) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(subscriptionTypeService.findById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(subscriptionTypeService.findById(id));
     }
 
     @PostMapping
