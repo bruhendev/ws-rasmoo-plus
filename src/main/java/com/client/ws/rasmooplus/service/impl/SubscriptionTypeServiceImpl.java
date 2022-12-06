@@ -39,8 +39,8 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
 
     @Override
     public void delete(Long id) {
-        // TODO Auto-generated method stub
-
+        getSubscriptionType(id);
+        subscriptionTypeRepository.deleteById(id);
     }
 
     @Override
