@@ -13,3 +13,19 @@ services:
       MYSQL_DATABASE: rasplus
       MYSQL_USER: bruno
       MYSQL_PASSWORD: senha123
+    volumes:
+      - mysql_data_container:/data/db
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27018:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: rasmoo
+      MONGO_INITDB_ROOT_PASSWORD: senha123
+    volumes:
+      - mongo_data_container:/data/db
+volumes:
+  mysql_data_container:
+  mongo_data_container:
