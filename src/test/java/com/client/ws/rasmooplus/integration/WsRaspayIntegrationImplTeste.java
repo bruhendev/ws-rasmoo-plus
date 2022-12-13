@@ -1,10 +1,13 @@
 package com.client.ws.rasmooplus.integration;
 
+import java.math.BigDecimal;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.client.ws.rasmooplus.dto.wsraspay.CustomerDto;
+import com.client.ws.rasmooplus.dto.wsraspay.OrderDto;
 
 @SpringBootTest
 public class WsRaspayIntegrationImplTeste {
@@ -12,9 +15,15 @@ public class WsRaspayIntegrationImplTeste {
     @Autowired
     private WsRaspayIntegration wsRaspayIntegration;
 
+    // @Test
+    // void createCustomerWhenDtoOk() {
+    //     CustomerDto dto = new CustomerDto(null, "860.263.270-37", "email@email.br", "João", "Pereira");
+    //     wsRaspayIntegration.createCustomer(dto);
+    // }
+
     @Test
-    void createCustomerWhenDtoOk() {
-        CustomerDto dto = new CustomerDto(null, "860.263.270-37", "email@email.br", "João", "Pereira");
-        wsRaspayIntegration.createCustomer(dto);
+    void createOrderWhenDtoOk() {
+        OrderDto dto = new OrderDto(null, "6398c2922f44f417d47e7d8e", BigDecimal.ZERO, "MONTH22");
+        wsRaspayIntegration.createOrder(dto);
     }
 }

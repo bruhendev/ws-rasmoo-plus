@@ -17,16 +17,17 @@ import com.client.ws.rasmooplus.integration.WsRaspayIntegration;
 public class WsRaspayIntegrationImpl implements WsRaspayIntegration {
 
     private RestTemplate restTemplate;
+    private HttpHeaders headers;
 
     public WsRaspayIntegrationImpl() {
         this.restTemplate = new RestTemplate();
+        this.headers = getHttpHeaders();
     }
 
     @Override
     public CustomerDto createCustomer(CustomerDto dto) {
         try {
-            HttpHeaders headers = getHttpHeaders();
-            HttpEntity<CustomerDto> request = new HttpEntity<CustomerDto>(dto, headers);
+            HttpEntity<CustomerDto> request = new HttpEntity<CustomerDto>(dto, this.headers);
             ResponseEntity<CustomerDto> response = restTemplate.exchange("http://localhost:8081/ws-raspay/v1/customer",
                     HttpMethod.POST, request, CustomerDto.class);
             return response.getBody();
@@ -38,8 +39,14 @@ public class WsRaspayIntegrationImpl implements WsRaspayIntegration {
 
     @Override
     public OrderDto createOrder(OrderDto dto) {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            HttpEntity<OrderDto> request = new HttpEntity<OrderDto>(dto, this.headers);
+            ResponseEntity<OrderDto> response = restTemplate.exchange("http://localhost:8081/ws-raspay/v1/order",
+                    HttpMethod.POST, request, OrderDto.class);
+            return response.getBody();
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Override
