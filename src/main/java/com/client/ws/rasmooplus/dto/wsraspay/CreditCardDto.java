@@ -14,10 +14,10 @@ public class CreditCardDto {
     private String documentNumber;
 
     private Long installments;
+    
+    private Long month;
 
     private String number;
 
-    private String month;
-
-    private String year;
+    private Long year;
 }
