@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "user_type")
-public class UserType implements Serializable {
+public class UserType implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +32,8 @@ public class UserType implements Serializable {
 
     private String description;
 
+    @Override
+    public String getAuthority() {
+        return name;
+    }
 }
