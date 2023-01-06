@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import com.client.ws.rasmooplus.dto.wsraspay.OrderDto;
 import com.client.ws.rasmooplus.dto.wsraspay.PaymentDto;
+import com.client.ws.rasmooplus.integration.MailIntegration;
 import com.client.ws.rasmooplus.mapper.wsraspay.CreditCardMapper;
 import com.client.ws.rasmooplus.mapper.wsraspay.OrderMapper;
 import com.client.ws.rasmooplus.mapper.wsraspay.PaymentMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.client.ws.rasmooplus.dto.PaymentProcessDto;
@@ -29,18 +31,20 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
     private final UserRepository userRepository;
     private final UserPaymentInfoRepository userPaymentInfoRepository;
     private final WsRaspayIntegration wsRaspayIntegration;
+    private final MailIntegration mailIntegration;
 
     PaymentInfoServiceImpl(UserRepository userRepository, UserPaymentInfoRepository userPaymentInfoRepository,
-                           WsRaspayIntegration wsRaspayIntegration) {
+                           WsRaspayIntegration wsRaspayIntegration, MailIntegration mailIntegration) {
         this.userRepository = userRepository;
         this.userPaymentInfoRepository = userPaymentInfoRepository;
         this.wsRaspayIntegration = wsRaspayIntegration;
+        this.mailIntegration = mailIntegration;
     }
 
     @Override
     public Boolean process(PaymentProcessDto dto) {
         // verifica usuario por id e verifica se já existe assinatura
-        Optional<User> userOpt = userRepository.findById(dto.getUserPaymentInfoDto().getId());
+        Optional<User> userOpt = userRepository.findById(dto.getUserPaymentInfoDto().getUserId());
         if (userOpt.isEmpty()) {
             throw new NotFoundException("Usuário não encontrado");
         }
@@ -64,10 +68,12 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
             //salvar informações de pagamento
             UserPaymentInfo userPaymentInfo = UserPaymentInfoMapper.fromDtotoEntity(dto.getUserPaymentInfoDto(), user);
             userPaymentInfoRepository.save(userPaymentInfo);
+            //mailIntegration.send(user.getEmail(), "Usuario: " + user.getEmail() + " - Senha: alunorassmo", "Acesso Liberado");
+            return true;
         }
         //enviar email de criacao de conta
         //retornar o sucesso ou nao do pagamento
-        return null;
+        return false;
     }
 
 }
