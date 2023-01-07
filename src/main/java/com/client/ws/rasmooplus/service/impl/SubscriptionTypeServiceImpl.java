@@ -76,4 +76,6 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
         return optionalSubscriptionType.get();
     }
 
+
+
 }

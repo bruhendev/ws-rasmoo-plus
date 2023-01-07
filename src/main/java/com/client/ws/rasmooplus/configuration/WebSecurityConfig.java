@@ -1,5 +1,8 @@
 package com.client.ws.rasmooplus.configuration;
 
+import com.client.ws.rasmooplus.filter.AuthenticationFilter;
+import com.client.ws.rasmooplus.repositoy.UserDetailsRepository;
+import com.client.ws.rasmooplus.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,12 +16,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity()
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private UserDetailsRepository userDetailsRepository;
+
     @Autowired
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -29,10 +40,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/subscription-type").permitAll()
-                .antMatchers(HttpMethod.GET, "/subscription-type/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .anyRequest().authenticated()
-                .and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().addFilterBefore(new AuthenticationFilter(this.tokenService, this.userDetailsRepository), UsernamePasswordAuthenticationFilter.class);
     }
 
     //responsavel pela configuracao de autenticacao -> Login e senha
@@ -46,5 +57,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
 
     }
+
+//    public static void main(String[] args) {
+//        System.out.println(new BCryptPasswordEncoder().encode("123456"));
+//    }
 
 }
